@@ -1,0 +1,29 @@
+name: Run Java Program Manually
+
+on:
+  workflow_dispatch:
+    inputs:
+      main_class:
+        description: 'The name of the main class to run (without .java)'
+        required: false
+        default: 'main' 
+
+jobs:
+  run-java:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Compile and Run Program
+      run: |
+        echo "Compiling and running ${{ github.event.inputs.main_class }}..."
+        javac ${{ github.event.inputs.main_class }}.java
+        java ${{ github.event.inputs.main_class }}
